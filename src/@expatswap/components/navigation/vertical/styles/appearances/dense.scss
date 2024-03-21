@@ -1,0 +1,194 @@
+/* Variables */
+:root {
+    --expatswap-vertical-navigation-width: 280px;
+    --expatswap-vertical-navigation-dense-width: 80px;
+}
+
+expatswap-vertical-navigation {
+
+    /* Dense appearance overrides */
+    &.expatswap-vertical-navigation-appearance-dense {
+
+        &:not(.expatswap-vertical-navigation-mode-over) {
+            width: var(--expatswap-vertical-navigation-dense-width);
+            min-width: var(--expatswap-vertical-navigation-dense-width);
+            max-width: var(--expatswap-vertical-navigation-dense-width);
+
+            /* Left positioned */
+            &.expatswap-vertical-navigation-position-left {
+
+                /* Side mode */
+                &.expatswap-vertical-navigation-mode-side {
+                    margin-left: calc(var(--expatswap-vertical-navigation-dense-width) * -1);
+                }
+
+                /* Opened */
+                &.expatswap-vertical-navigation-opened {
+                    margin-left: 0;
+                }
+            }
+
+            /* Right positioned */
+            &.expatswap-vertical-navigation-position-right {
+
+                /* Side mode */
+                &.expatswap-vertical-navigation-mode-side {
+                    margin-right: calc(var(--expatswap-vertical-navigation-dense-width) * -1);
+                }
+
+                /* Opened */
+                &.expatswap-vertical-navigation-opened {
+                    margin-right: 0;
+                }
+
+                /* Aside wrapper */
+                .expatswap-vertical-navigation-aside-wrapper {
+                    left: auto;
+                    right: var(--expatswap-vertical-navigation-dense-width);
+                }
+
+                &.expatswap-vertical-navigation-hover {
+
+                    .expatswap-vertical-navigation-aside-wrapper {
+                        left: auto;
+                        right: var(--expatswap-vertical-navigation-width);
+                    }
+                }
+            }
+        }
+
+        /* Wrapper */
+        .expatswap-vertical-navigation-wrapper {
+
+            /* Content */
+            .expatswap-vertical-navigation-content {
+
+                expatswap-vertical-navigation-aside-item,
+                expatswap-vertical-navigation-basic-item,
+                expatswap-vertical-navigation-collapsable-item,
+                expatswap-vertical-navigation-group-item {
+
+                    .expatswap-vertical-navigation-item-wrapper {
+
+                        .expatswap-vertical-navigation-item {
+                            width: calc(var(--expatswap-vertical-navigation-dense-width) - 24px);
+                            min-width: calc(var(--expatswap-vertical-navigation-dense-width) - 24px);
+                            max-width: calc(var(--expatswap-vertical-navigation-dense-width) - 24px);
+
+                            .expatswap-vertical-navigation-item-arrow,
+                            .expatswap-vertical-navigation-item-badge,
+                            .expatswap-vertical-navigation-item-title-wrapper {
+                                transition: opacity 400ms cubic-bezier(0.25, 0.8, 0.25, 1);
+                            }
+                        }
+                    }
+                }
+
+                expatswap-vertical-navigation-group-item {
+
+                    &:first-of-type {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+
+        &:not(.expatswap-vertical-navigation-hover):not(.expatswap-vertical-navigation-mode-over) {
+
+            /* Wrapper */
+            .expatswap-vertical-navigation-wrapper {
+
+                /* Content */
+                .expatswap-vertical-navigation-content {
+
+                    .expatswap-vertical-navigation-item-wrapper {
+
+                        .expatswap-vertical-navigation-item {
+                            padding: 10px 16px;
+
+                            .expatswap-vertical-navigation-item-arrow,
+                            .expatswap-vertical-navigation-item-badge,
+                            .expatswap-vertical-navigation-item-title-wrapper {
+                                white-space: nowrap;
+                                opacity: 0;
+                            }
+                        }
+                    }
+
+                    expatswap-vertical-navigation-collapsable-item {
+
+                        .expatswap-vertical-navigation-item-children {
+                            display: none;
+                        }
+                    }
+
+                    expatswap-vertical-navigation-group-item {
+
+                        > .expatswap-vertical-navigation-item-wrapper {
+
+                            .expatswap-vertical-navigation-item {
+
+                                &:before {
+                                    content: '';
+                                    position: absolute;
+                                    top: 20px;
+                                    width: 23px;
+                                    border-top-width: 2px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Aside wrapper */
+        .expatswap-vertical-navigation-aside-wrapper {
+            left: var(--expatswap-vertical-navigation-dense-width);
+        }
+
+        /* Hover */
+        &.expatswap-vertical-navigation-hover {
+
+            .expatswap-vertical-navigation-wrapper {
+                width: var(--expatswap-vertical-navigation-width);
+
+                .expatswap-vertical-navigation-content {
+
+                    .expatswap-vertical-navigation-item-wrapper {
+
+                        .expatswap-vertical-navigation-item {
+                            width: calc(var(--expatswap-vertical-navigation-width) - 24px);
+                            min-width: calc(var(--expatswap-vertical-navigation-width) - 24px);
+                            max-width: calc(var(--expatswap-vertical-navigation-width) - 24px);
+
+                            .expatswap-vertical-navigation-item-arrow,
+                            .expatswap-vertical-navigation-item-badge,
+                            .expatswap-vertical-navigation-item-title-wrapper {
+                                white-space: nowrap;
+                                animation: removeWhiteSpaceNoWrap 1ms linear 350ms;
+                                animation-fill-mode: forwards;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .expatswap-vertical-navigation-aside-wrapper {
+                left: var(--expatswap-vertical-navigation-width);
+            }
+        }
+    }
+}
+
+@keyframes removeWhiteSpaceNoWrap {
+    0% {
+        white-space: nowrap
+    }
+    99% {
+        white-space: nowrap
+    }
+    100% {
+        white-space: normal;
+    }
+}

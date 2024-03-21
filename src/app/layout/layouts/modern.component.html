@@ -1,0 +1,50 @@
+<!-- Loading bar -->
+<expatswap-loading-bar></expatswap-loading-bar>
+
+<!-- Wrapper -->
+<div class="flex flex-col flex-auto w-full min-w-0">
+
+    <!-- Header -->
+    <div class="relative flex flex-0 items-center w-full h-16 sm:h-20 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
+        <ng-container *ngIf="!isScreenSmall">
+            <!-- Logo -->
+            <div class="flex items-center mx-2 lg:mr-8">
+                <div class="hidden lg:flex">
+                    <img
+                        class="dark:hidden w-40"
+                        src="assets/images/logo/logo-text.svg">
+                    
+                </div>
+                <img
+                    class="flex lg:hidden w-8"
+                    src="assets/images/logo/logo.svg">
+            </div>
+            <!-- Horizontal navigation -->
+            <expatswap-horizontal-navigation
+                class="mr-2"
+                [name]="'mainNavigation'"
+                [navigation]="navigation.horizontal"></expatswap-horizontal-navigation>
+        </ng-container>
+        <!-- Navigation toggle button -->
+        <ng-container *ngIf="isScreenSmall">
+            <button
+                mat-icon-button
+                (click)="toggleNavigation('mainNavigation')">
+                <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
+            </button>
+        </ng-container>
+
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col flex-auto w-full">
+        <router-outlet *ngIf="true"></router-outlet>
+    </div>
+
+    <!-- Footer -->
+    <div class="relative flex flex-0 items-center w-full h-14 sm:h-20 px-4 md:px-6 z-49 border-t bg-card dark:bg-transparent print:hidden">
+        <span class="font-medium text-secondary">Expatswap &copy; {{currentYear}}</span>
+    </div>
+
+</div>
+

@@ -1,0 +1,99 @@
+/* Variables */
+:root {
+    --expatswap-vertical-navigation-thin-width: 80px;
+}
+
+expatswap-vertical-navigation {
+
+    /* Thin appearance overrides */
+    &.expatswap-vertical-navigation-appearance-thin {
+        width: var(--expatswap-vertical-navigation-thin-width);
+        min-width: var(--expatswap-vertical-navigation-thin-width);
+        max-width: var(--expatswap-vertical-navigation-thin-width);
+
+        /* Left positioned */
+        &.expatswap-vertical-navigation-position-left {
+
+            &.expatswap-vertical-navigation-mode-side {
+                margin-left: calc(var(--expatswap-vertical-navigation-thin-width) * -1);
+            }
+
+            &.expatswap-vertical-navigation-opened {
+                margin-left: 0;
+            }
+        }
+
+        /* Right positioned */
+        &.expatswap-vertical-navigation-position-right {
+
+            &.expatswap-vertical-navigation-mode-side {
+                margin-right: calc(var(--expatswap-vertical-navigation-thin-width) * -1);
+            }
+
+            &.expatswap-vertical-navigation-opened {
+                margin-right: 0;
+            }
+
+            .expatswap-vertical-navigation-aside-wrapper {
+                left: auto;
+                right: var(--expatswap-vertical-navigation-thin-width);
+            }
+        }
+
+        /* Wrapper */
+        .expatswap-vertical-navigation-wrapper {
+
+            /* Content */
+            .expatswap-vertical-navigation-content {
+
+                > expatswap-vertical-navigation-aside-item,
+                > expatswap-vertical-navigation-basic-item {
+                    flex-direction: column;
+                    justify-content: center;
+                    height: 64px;
+                    min-height: 64px;
+                    max-height: 64px;
+                    padding: 0 16px;
+
+                    .expatswap-vertical-navigation-item-wrapper {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        .expatswap-vertical-navigation-item {
+                            justify-content: center;
+                            padding: 12px;
+                            border-radius: 4px;
+
+                            .expatswap-vertical-navigation-item-icon {
+                                margin: 0;
+                            }
+
+                            .expatswap-vertical-navigation-item-arrow,
+                            .expatswap-vertical-navigation-item-badge-content,
+                            .expatswap-vertical-navigation-item-title-wrapper {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+
+                > expatswap-vertical-navigation-collapsable-item {
+                    display: none
+                }
+
+                > expatswap-vertical-navigation-group-item {
+
+                    > .expatswap-vertical-navigation-item-wrapper {
+                        display: none
+                    }
+                }
+            }
+        }
+
+        /* Aside wrapper */
+        .expatswap-vertical-navigation-aside-wrapper {
+            left: var(--expatswap-vertical-navigation-thin-width);
+        }
+    }
+}

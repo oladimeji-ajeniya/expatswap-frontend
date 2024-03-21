@@ -1,0 +1,112 @@
+/* Variables */
+:root {
+    --expatswap-vertical-navigation-compact-width: 112px;
+}
+
+expatswap-vertical-navigation {
+
+    /* Compact appearance overrides */
+    &.expatswap-vertical-navigation-appearance-compact {
+        width: var(--expatswap-vertical-navigation-compact-width);
+        min-width: var(--expatswap-vertical-navigation-compact-width);
+        max-width: var(--expatswap-vertical-navigation-compact-width);
+
+        /* Left positioned */
+        &.expatswap-vertical-navigation-position-left {
+
+            /* Side mode */
+            &.expatswap-vertical-navigation-mode-side {
+                margin-left: calc(var(--expatswap-vertical-navigation-compact-width) * -1);
+            }
+
+            /* Opened */
+            &.expatswap-vertical-navigation-opened {
+                margin-left: 0;
+            }
+        }
+
+        /* Right positioned */
+        &.expatswap-vertical-navigation-position-right {
+
+            /* Side mode */
+            &.expatswap-vertical-navigation-mode-side {
+                margin-right: calc(var(--expatswap-vertical-navigation-compact-width) * -1);
+            }
+
+            /* Opened */
+            &.expatswap-vertical-navigation-opened {
+                margin-right: 0;
+            }
+
+            /* Aside wrapper */
+            .expatswap-vertical-navigation-aside-wrapper {
+                left: auto;
+                right: var(--expatswap-vertical-navigation-compact-width);
+            }
+        }
+
+        /* Wrapper */
+        .expatswap-vertical-navigation-wrapper {
+
+            /* Content */
+            .expatswap-vertical-navigation-content {
+
+                > expatswap-vertical-navigation-aside-item,
+                > expatswap-vertical-navigation-basic-item {
+
+                    .expatswap-vertical-navigation-item-wrapper {
+                        margin: 4px 8px 0 8px;
+
+                        .expatswap-vertical-navigation-item {
+                            flex-direction: column;
+                            justify-content: center;
+                            padding: 12px;
+                            border-radius: 6px;
+
+                            .expatswap-vertical-navigation-item-icon {
+                                margin-right: 0;
+                            }
+
+                            .expatswap-vertical-navigation-item-title-wrapper {
+                                margin-top: 8px;
+
+                                .expatswap-vertical-navigation-item-title {
+                                    font-size: 12px;
+                                    font-weight: 500;
+                                    text-align: center;
+                                    line-height: 16px;
+                                }
+
+                                .expatswap-vertical-navigation-item-subtitle {
+                                    display: none !important;
+                                }
+                            }
+
+                            .expatswap-vertical-navigation-item-badge {
+                                position: absolute;
+                                top: 12px;
+                                left: 64px;
+                            }
+                        }
+                    }
+
+                    > expatswap-vertical-navigation-collapsable-item {
+                        display: none
+                    }
+
+                    > expatswap-vertical-navigation-group-item {
+
+                        > .expatswap-vertical-navigation-item-wrapper {
+                            display: none
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Aside wrapper */
+        .expatswap-vertical-navigation-aside-wrapper {
+            left: var(--expatswap-vertical-navigation-compact-width);
+        }
+    }
+}

@@ -1,0 +1,121 @@
+<div class="expatswap-vertical-navigation-wrapper">
+
+    <!-- Header -->
+    <div class="expatswap-vertical-navigation-header">
+        <ng-content select="[expatswapVerticalNavigationHeader]"></ng-content>
+    </div>
+
+    <!-- Content -->
+    <div
+        class="expatswap-vertical-navigation-content"
+        expatswapScrollbar
+        #navigationContent>
+
+        <!-- Content header -->
+        <div class="expatswap-vertical-navigation-content-header">
+            <ng-content select="[expatswapVerticalNavigationContentHeader]"></ng-content>
+        </div>
+ 
+        <!-- Items --> 
+        <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+
+            <!-- Skip the hidden items -->
+            <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
+
+                <!-- Aside -->
+                <ng-container *ngIf="item.type === 'aside'">
+                    <expatswap-vertical-navigation-aside-item
+                        [item]="item"
+                        [name]="name"
+                        [activeItemId]="activeAsideItemId"
+                        [autoCollapse]="autoCollapse"
+                        [skipChildren]="true"
+                        (click)="toggleAside(item)"></expatswap-vertical-navigation-aside-item>
+                </ng-container>
+
+                <!-- Basic -->
+                <ng-container *ngIf="item.type === 'basic'">
+                    <expatswap-vertical-navigation-basic-item
+                        [item]="item"
+                        [name]="name"></expatswap-vertical-navigation-basic-item>
+                </ng-container>
+
+                <!-- Collapsable -->
+                <ng-container *ngIf="item.type === 'collapsable'">
+                    <expatswap-vertical-navigation-collapsable-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></expatswap-vertical-navigation-collapsable-item>
+                </ng-container>
+
+                <!-- Divider -->
+                <ng-container *ngIf="item.type === 'divider'">
+                    <expatswap-vertical-navigation-divider-item
+                        [item]="item"
+                        [name]="name"></expatswap-vertical-navigation-divider-item>
+                </ng-container>
+
+                <!-- Group -->
+                <ng-container *ngIf="item.type === 'group'">
+                    <expatswap-vertical-navigation-group-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></expatswap-vertical-navigation-group-item>
+                </ng-container>
+
+                <!-- Spacer -->
+                <ng-container *ngIf="item.type === 'spacer'">
+                    <expatswap-vertical-navigation-spacer-item
+                        [item]="item"
+                        [name]="name"></expatswap-vertical-navigation-spacer-item>
+                </ng-container>
+
+            </ng-container>
+
+        </ng-container>
+
+        <!-- Content footer -->
+        <div class="expatswap-vertical-navigation-content-footer">
+            <ng-content select="[expatswapVerticalNavigationContentFooter]"></ng-content>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="expatswap-vertical-navigation-footer">
+        <ng-content select="[expatswapVerticalNavigationFooter]"></ng-content>
+    </div>
+
+</div>
+
+<!-- Aside -->
+<ng-container *ngIf="activeAsideItemId">
+    <div
+        class="expatswap-vertical-navigation-aside-wrapper"
+        expatswapScrollbar
+        [expatswapScrollbarOptions]="{wheelPropagation: false, suppressScrollX: true}"
+        [@fadeInLeft]="position === 'left'"
+        [@fadeInRight]="position === 'right'"
+        [@fadeOutLeft]="position === 'left'"
+        [@fadeOutRight]="position === 'right'">
+
+        <!-- Items -->
+        <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+
+            <!-- Skip the hidden items -->
+            <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
+
+                <!-- Aside -->
+                <ng-container *ngIf="item.type === 'aside' && item.id === activeAsideItemId">
+                    <expatswap-vertical-navigation-aside-item
+                        [item]="item"
+                        [name]="name"
+                        [autoCollapse]="autoCollapse"></expatswap-vertical-navigation-aside-item>
+                </ng-container>
+
+            </ng-container>
+
+        </ng-container>
+
+    </div>
+</ng-container>
