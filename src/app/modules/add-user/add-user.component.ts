@@ -41,7 +41,6 @@ export class AddUserComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private _userService: UserService,
-        private datePipe: DatePipe
     )
     {
     }
