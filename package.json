@@ -2,6 +2,10 @@
     "name": "expatswap-angular",
     "version": "19.0.0",
     "description": "Expatswap",
+<<<<<<< HEAD
+=======
+    "author": "oladimeji ajeniya",
+>>>>>>> 39b45e1f3d6511d2818684eedf8630d2605b26e0
     "private": true,
     "scripts": {
         "ng": "ng",

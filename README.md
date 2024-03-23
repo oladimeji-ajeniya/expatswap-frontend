@@ -1,4 +1,4 @@
-# Expatswap - Admin template and Starter project for Angular
+# Expatswap 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
 
