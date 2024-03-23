@@ -107,8 +107,8 @@
                     <input  
                     id="dateOfBirth"
                     matInput
-                    [formControlName]="'dateOfBirth'"
-                    #dateOfBirth matInput [matDatepicker]="picker">
+                    [formControlName]="dateOfBirth"
+                    #dateOfBirth matInput [matDatepicker]="picker" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -116,6 +116,7 @@
                         Date of birth is required
                     </mat-error>
                   </mat-form-field>
+
 
                 <!-- Submit button -->
                 <button

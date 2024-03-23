@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgIf, DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,6 @@ import { UserService } from './add-user.service';
 import { ExpatswapAlertComponent, ExpatswapAlertType } from '@expatswap/alert';
 import { expatswapAnimations } from '@expatswap/animations';
 import { ExpatswapValidators } from '@expatswap/validators';
-import { DateAdapter } from '@angular/material/core';
 
 @Component({
     selector     : 'add-user',
@@ -42,7 +41,7 @@ export class AddUserComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private _userService: UserService,
-        private dateAdapter: DateAdapter<Date>
+        private datePipe: DatePipe
     )
     {
     }
@@ -140,4 +139,6 @@ export class AddUserComponent implements OnInit
             console.error('Error occurred:', error);
         });
     }
+
+    
 }

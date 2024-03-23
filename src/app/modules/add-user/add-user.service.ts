@@ -39,7 +39,6 @@ export class UserService {
      * Get user
      */
     getUsers(page: number = 1, limit: number = 20, startDate?: string, endDate?: string): Observable<UserList[]> {
-      console.log(this.baseUrl)
         // Construct the query parameters
         let params = new HttpParams()
           .set('page', page.toString())
@@ -55,8 +54,8 @@ export class UserService {
     
         // Make the HTTP GET request with the constructed parameters
         return this._httpClient.get<UserList[]>(this.baseUrl, { params }).pipe(
-          tap((users: UserList[]) => {
-            return users;
+          tap((response: UserList[]) => {
+            return response;
           })
         );
       }

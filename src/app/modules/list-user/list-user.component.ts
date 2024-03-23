@@ -1,70 +1,113 @@
 import { NgIf } from '@angular/common';
+import { of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator'; 
-import { User, UserList } from '../add-user/user.types';
+import { User } from '../add-user/user.types';
 import { UserService } from '../add-user/add-user.service';
 
 @Component({
-    selector     : 'list-user',
-    standalone   : true,
-    templateUrl  : './list-user.component.html',
-    encapsulation: ViewEncapsulation.None,
-    imports      : [RouterLink, NgIf, MatTableModule,MatPaginatorModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
+  selector     : 'list-user',
+  standalone   : true,
+  templateUrl  : './list-user.component.html',
+  encapsulation: ViewEncapsulation.None,
+  imports      : [RouterLink, CommonModule, NgIf, MatTableModule,MatPaginatorModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
 
 })
-export class ListUserComponent
-{
-    displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'dateOfBirth']; // Update displayedColumns
-    dataSource: MatTableDataSource<User>;
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    searchForm: FormGroup; // Define searchForm FormGroup
-    tableData: User[] = [];
-    isSearch: boolean = false;
-    count: string;
+export class ListUserComponent {
+  selectedDate: Date;
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'phoneNumber', 'email', 'dateOfBirth'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  totalItems = 0;
+  pageSize = 2; // Default page size
+  totalPages = 0;
+  searchForm: FormGroup; // Define searchForm FormGroup
+  tableData: User[] = [];
+  isSearch: boolean = false;
+  isLoading = false;
+  count: string;
+  totalData: any;
+  EmpData: any;
 
-  constructor(private fb: FormBuilder, private userService: UserService,) {
-    this.dataSource = new MatTableDataSource(this.tableData);
+  dataSource = new MatTableDataSource<User>();
+  pageSizes = [2, 3, 5, 7];
+
+  constructor(private fb: FormBuilder, private userService: UserService) {
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.searchForm = this.fb.group({
-        startDate: [''],
-        endDate: [''] 
-      });  
+      startDate: [''],
+      endDate: ['']
+    });
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.paginator.page.subscribe((event: PageEvent) => {
-      this.getUsers(event.pageIndex + 1, event.pageSize); // Add 1 to pageIndex to make it 1-based
-    });
-    this.getUsers(1, this.paginator.pageSize);
+
+    this.paginator.page
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoading = true;
+          return this.getTableData$(
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize
+          ).pipe(catchError(() => observableOf(null)));
+        }),
+        map((data: any) => {
+          if (data == null) return [];
+          this.totalData = data.total;
+          this.isLoading = false;
+          return data.users;
+        })
+      )
+      .subscribe((empData) => {
+        this.EmpData = empData;
+        this.dataSource = new MatTableDataSource(this.EmpData);
+      });
+
   }
+
+  getTableData$(pageNumber: number, pageSize: number) {
+    const startDate = this.searchForm.get('startDate')?.value;
+    const endDate = this.searchForm.get('endDate')?.value;
+
+    return this.userService.getUsers(pageNumber, pageSize, startDate, endDate);
+  }
+
 
   getUsers(page: number, limit: number): void {
     const startDate = this.searchForm.get('startDate')?.value;
     const endDate = this.searchForm.get('endDate')?.value;
 
-    this.userService.getUsers(page,limit,startDate,endDate)
-      .subscribe(
-        (data: any) => {
-          this.tableData = data.users;
-          this.dataSource.data = this.tableData;
-          this.count = data.count;
-          this.isSearch = false;
-        },
-        error => console.error('Error fetching users:', error)
-      );
+    this.userService.getUsers(page, limit, startDate, endDate).subscribe(
+      (data: any) => {
+        this.tableData = data.users;
+        this.dataSource.data = this.tableData;
+        this.totalItems = data.total; // Update totalItems from the API response
+        this.totalPages = Math.ceil(this.totalItems / this.pageSize); // Calculate total pages
+        this.isSearch = false;
+
+        // Update pagination if necessary
+        if (this.totalItems > this.pageSize * this.paginator.pageSize) {
+          this.paginator.pageSizeOptions = [this.pageSize, this.totalItems]; // Update pageSizeOptions to include totalItems
+        }
+      },
+      error => console.error('Error fetching users:', error)
+    );
   }
+  
 
   search() {
     const startDate = this.searchForm.get('startDate')?.value;
@@ -80,19 +123,30 @@ export class ListUserComponent
     this.userService.getUsers(page, limit, startDate, endDate)
       .subscribe(
         (data: any) => {
-            // Reset the form
-            this.searchForm.reset();
+          // Reset the form
+          this.searchForm.reset();
 
-            // Re-enable the form
-            this.searchForm.enable();
+          // Re-enable the form
+          this.searchForm.enable();
 
-            this.isSearch = true;
+          this.isSearch = true;
 
-            this.tableData = data.users;
-            this.dataSource.data = this.tableData;
-            this.count = data.count;
+          this.tableData = data.users;
+          this.dataSource.data = this.tableData;
+          this.totalItems = data.total; // Update totalItems from the API response
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize); // Calculate total pages
+          this.isSearch = false;
+
+           // Update pagination if necessary
+          if (this.totalItems > this.pageSize * this.paginator.pageSize) {
+            this.paginator.pageSizeOptions = [this.pageSize, this.totalItems]; // Update pageSizeOptions to include totalItems
+          }
+
         },
         error => console.error('Error fetching users:', error)
       );
   }
+
+
 }
+

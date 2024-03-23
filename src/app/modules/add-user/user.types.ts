@@ -12,6 +12,6 @@ export interface User
 
 export interface UserList
 {
-    users?: User;
+    users?: User[];
     count: number;
 }
