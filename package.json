@@ -1,9 +1,7 @@
 {
     "name": "expatswap-angular",
     "version": "19.0.0",
-    "description": "Expatswap - Angular Admin Template and Starter Project",
-    "author": "https://themeforest.net/user/srcn",
-    "license": "https://themeforest.net/licenses/standard",
+    "description": "Expatswap",
     "private": true,
     "scripts": {
         "ng": "ng",

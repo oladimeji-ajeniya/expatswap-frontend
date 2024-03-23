@@ -8,11 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from './add-user.service';
 import { ExpatswapAlertComponent, ExpatswapAlertType } from '@expatswap/alert';
 import { expatswapAnimations } from '@expatswap/animations';
 import { ExpatswapValidators } from '@expatswap/validators';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
     selector     : 'add-user',
@@ -41,6 +42,7 @@ export class AddUserComponent implements OnInit
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
         private _userService: UserService,
+        private dateAdapter: DateAdapter<Date>
     )
     {
     }
@@ -77,60 +79,65 @@ export class AddUserComponent implements OnInit
         return this.addUserForm.get('password');
     }
 
-    /**
-     * Add user
-     */
-    addUser(): void
-    {
+    addUser(): void {
         // Do nothing if the form is invalid
-        if ( this.addUserForm.invalid )
-        {
+        if (this.addUserForm.invalid) {
             return;
         }
-
+    
         // Disable the form
         this.addUserForm.disable();
-
+     
         // Hide the alert
         this.showAlert = false;
-
-        const user = {
-            firstName: this.addUserForm.value.firstName,
-            lastName: this.addUserForm.value.lastName,
-            phoneNumber: this.addUserForm.value.phoneNumber,
-            email: this.addUserForm.value.email,
-            password: this.addUserForm.value.password,
-            dateOfBirth: this.addUserForm.value.dateOfBirth,
-        }
-
-        this._userService.add(user)
-            .subscribe(
-                () =>
-                {
-                    const redirectURL = '/list-user';
-
-                    // Navigate to the redirect url
-                    this._router.navigateByUrl(redirectURL);
-
-                },
-                (response) =>
-                {
-                    // Re-enable the form
-                    this.addUserForm.enable();
-
-                    // Reset the form
-                    this.addUserNgForm.resetForm();
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Wrong email or password',
-                    };
-
-                    // Show the alert
-                    this.showAlert = true;
-                },
-            );
-
+    
+        // Check if email already exists
+        this.checkUser(this.addUserForm.value.email);
+    }
+    
+    checkUser(email: string) {
+        this._userService.checkUserExists(email).subscribe(response => {
+            if (response.exists) {
+                // Set the alert
+                this.alert = {
+                    type   : 'error',
+                    message: 'Email exists',
+                };
+    
+                // Show the alert
+                this.showAlert = true;
+    
+                // Re-enable the form
+                this.addUserForm.enable();
+            } else {
+                // If the email does not exist, proceed to add the user
+                this._userService.add(this.addUserForm.value)
+                    .subscribe(
+                        () => {
+                            const redirectURL = '/list-user';
+    
+                            // Navigate to the redirect url
+                            this._router.navigateByUrl(redirectURL);
+                        },
+                        (error) => {
+                            // Re-enable the form
+                            this.addUserForm.enable();
+    
+                            // Set the alert
+                            this.alert = {
+                                type   : 'error',
+                                message: 'Error adding user',
+                            };
+    
+                            // Show the alert
+                            this.showAlert = true;
+    
+                            console.error('Error occurred:', error);
+                        }
+                    );
+            }
+        }, error => {
+            console.error('Error occurred:', error);
+        });
     }
 }

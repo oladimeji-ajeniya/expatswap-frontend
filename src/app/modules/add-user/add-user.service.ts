@@ -2,10 +2,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, ReplaySubject, tap } from 'rxjs';
 import { User, UserList } from './user.types';
+import { environment } from 'environments/environments';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-    private apiUrl = 'http://localhost:3009/api/user';
+    private baseUrl = environment.apiUrl + 'user';
 
     private _httpClient = inject(HttpClient);
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
@@ -38,6 +39,7 @@ export class UserService {
      * Get user
      */
     getUsers(page: number = 1, limit: number = 20, startDate?: string, endDate?: string): Observable<UserList[]> {
+      console.log(this.baseUrl)
         // Construct the query parameters
         let params = new HttpParams()
           .set('page', page.toString())
@@ -52,7 +54,7 @@ export class UserService {
         }
     
         // Make the HTTP GET request with the constructed parameters
-        return this._httpClient.get<UserList[]>(this.apiUrl, { params }).pipe(
+        return this._httpClient.get<UserList[]>(this.baseUrl, { params }).pipe(
           tap((users: UserList[]) => {
             return users;
           })
@@ -67,13 +69,16 @@ export class UserService {
      */
     add(user: User): Observable<any>
     {
-
-        return this._httpClient.post<User>(this.apiUrl, {user}).pipe(
+        return this._httpClient.post<User>(this.baseUrl, user).pipe(
             map((response) =>
             {
                 this._user.next(response);
             }),
         );
+    }
+
+    checkUserExists(email: string): Observable<{ exists: boolean }> {
+      return this._httpClient.get<{ exists: boolean }>(`${this.baseUrl}/exists?email=${email}`);
     }
 
 }

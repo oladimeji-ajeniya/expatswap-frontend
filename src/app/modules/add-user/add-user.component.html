@@ -90,19 +90,17 @@
                         matSuffix>
                         <mat-icon
                             class="icon-size-5"
-                            *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            *ngIf="passwordField.type === 'password'">visibility_off</mat-icon>
                         <mat-icon
                             class="icon-size-5"
-                            *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+                            *ngIf="passwordField.type === 'text'">visibility</mat-icon>
                     </button>
 
                     <mat-error *ngIf="passwordControl.hasError('invalidPassword')">
-                    Password should contain lowercase, uppercase, number, 
-                        one symbol, and 8 characters long.
+                        Password should contain lowercase, uppercase, number, one symbol, and 8 characters long.
                     </mat-error>
                 </mat-form-field>
+
 
                 <mat-form-field class="w-full">
                     <mat-label>Date of birth</mat-label>
