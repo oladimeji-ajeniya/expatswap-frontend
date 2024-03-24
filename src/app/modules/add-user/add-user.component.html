@@ -75,7 +75,7 @@
                 </mat-form-field>
 
                 <!-- Password field -->
-                <mat-form-field class="w-full" [class.mb-5]="passwordControl.hasError('invalidPassword')">
+                <mat-form-field class="w-full" [class.mb-5]="addUserForm.hasError('invalidPassword')">
                     <mat-label>Password</mat-label>
                     <input
                         id="password"
@@ -96,18 +96,17 @@
                             *ngIf="passwordField.type === 'text'">visibility</mat-icon>
                     </button>
 
-                    <mat-error *ngIf="passwordControl.hasError('invalidPassword')">
+                    <mat-error *ngIf="addUserForm.hasError('invalidPassword')">
                         Password should contain lowercase, uppercase, number, one symbol, and 8 characters long.
                     </mat-error>
                 </mat-form-field>
-
 
                 <mat-form-field class="w-full">
                     <mat-label>Date of birth</mat-label>
                     <input  
                     id="dateOfBirth"
                     matInput
-                    [formControlName]="dateOfBirth"
+                    [formControlName]="'dateOfBirth'"
                     #dateOfBirth matInput [matDatepicker]="picker" >
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -115,8 +114,7 @@
                     <mat-error *ngIf="addUserForm.get('dateOfBirth').hasError('required')">
                         Date of birth is required
                     </mat-error>
-                  </mat-form-field>
-
+                </mat-form-field>
 
                 <!-- Submit button -->
                 <button
@@ -133,7 +131,7 @@
                         [diameter]="24"
                         [mode]="'indeterminate'"></mat-progress-spinner>
                 </button>
-
+          
             </form>
         </div>
     </div>
