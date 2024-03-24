@@ -135,7 +135,6 @@ export class ListUserComponent {
           this.dataSource.data = this.tableData;
           this.totalItems = data.total; // Update totalItems from the API response
           this.totalPages = Math.ceil(this.totalItems / this.pageSize); // Calculate total pages
-          this.isSearch = false;
 
            // Update pagination if necessary
           if (this.totalItems > this.pageSize * this.paginator.pageSize) {
